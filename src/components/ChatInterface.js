@@ -13,7 +13,6 @@ const ChatInterface = () => {
 
   const recognition = useRef(null);
   const synthesis = useRef(window.speechSynthesis);
-  // const genAI = new GoogleGenerativeAI("AIzaSyDt-W_YmTQEYB7lyW2wS7c8UyFq-CyKiYE");  // Changed constructor
   const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
   useEffect(() => {
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
