@@ -166,8 +166,15 @@ const ChatInterface = ({ userId }) => {
 
   return (
     <div>
-      <button onClick={startNewConversation}>Start New Conversation</button>
-      <button onClick={endConversation} disabled={!conversationId}>End Conversation</button>
+      <button
+        onClick={startNewConversation}
+        disabled={!!conversationId} // Disable if there is an active conversation
+      >
+        Start New Conversation
+      </button>
+      <button onClick={endConversation} disabled={!conversationId}>
+        End Conversation
+      </button>
       {!isSpeechSupported && (
         <div className="warning">Speech recognition is not supported in your browser.</div>
       )}
@@ -195,26 +202,26 @@ const ChatInterface = ({ userId }) => {
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
-              if (inputText.trim() && !isLoading) {
+              if (inputText.trim() && !isLoading && conversationId) {
                 handleSend();
               }
             }
           }}
           placeholder="Type or speak your message..."
-          disabled={isLoading}
+          disabled={isLoading || !conversationId} // Disable if no conversation
         />
         <div className="button-group">
           <button
             className={`record-button ${isRecording ? 'recording' : ''}`}
             onClick={isRecording ? stopRecording : startRecording}
-            disabled={!isSpeechSupported || isLoading}
+            disabled={!isSpeechSupported || isLoading || !conversationId} // Disable if no conversation
           >
             <FaMicrophone />
           </button>
           <button
             className="send-button"
             onClick={handleSend}
-            disabled={!inputText.trim() || isLoading}
+            disabled={!inputText.trim() || isLoading || !conversationId} // Disable if no conversation
           >
             {isLoading ? 'Thinking...' : 'Send'}
           </button>

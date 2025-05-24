@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import Navbar from './Navbar';
+import Home from './Home';
+import HistoryChat from './HistoryChat';
 import ChatInterface from './ChatInterface';
+import ConversationDetail from './ConversationDetail'; // Add this import
 
 const AuthForm = () => {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -9,6 +13,8 @@ const AuthForm = () => {
   const [email, setEmail] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [page, setPage] = useState('home');
+  const [selectedConversationId, setSelectedConversationId] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -59,7 +65,43 @@ const AuthForm = () => {
   };
 
   if (isAuthenticated) {
-    return <ChatInterface userId={userId} />;
+    return (
+      <>
+        <Navbar
+          onHome={() => { setPage('home'); setSelectedConversationId(null); }}
+          onHistory={() => setPage('history')}
+          onChat={() => { setPage('chat'); setSelectedConversationId(null); }}
+          activePage={page} // <-- Pass the current page here
+        />
+        {page === 'home' && (
+          <Home
+            onHistory={() => setPage('history')}
+            onChat={() => { setPage('chat'); setSelectedConversationId(null); }}
+          />
+        )}
+        {page === 'history' && (
+          <HistoryChat
+            userId={userId}
+            onSelectConversation={id => {
+              setSelectedConversationId(id);
+              setPage('view-conversation'); // Change page to view-conversation
+            }}
+          />
+        )}
+        {page === 'view-conversation' && selectedConversationId && (
+          <ConversationDetail
+            conversationId={selectedConversationId}
+            onBack={() => setPage('history')}
+          />
+        )}
+        {page === 'chat' && (
+          <ChatInterface
+            userId={userId}
+            conversationId={selectedConversationId}
+          />
+        )}
+      </>
+    );
   }
 
   return (
