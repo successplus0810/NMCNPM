@@ -1,13 +1,14 @@
 import React from 'react';
-import ChatInterface from './components/ChatInterface';
-import './App.css';
+import AuthForm from './components/AuthForm';
+// import ChatInterface from './components/ChatInterface';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <ChatInterface />
+    <div>
+      <AuthForm />
+      {/* Render ChatInterface conditionally based on authentication status */}
     </div>
   );
-}
+};
 
 export default App;

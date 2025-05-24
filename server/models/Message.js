@@ -10,17 +10,15 @@ const Message = sequelize.define('Message', {
   },
   conversation_id: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
       model: Conversation,
       key: 'conversation_id'
     }
   },
   sender: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: {
-      isIn: [['user', 'ai']]
-    }
+    type: DataTypes.ENUM('user', 'ai'),
+    allowNull: false
   },
   content: {
     type: DataTypes.TEXT,
@@ -35,6 +33,7 @@ const Message = sequelize.define('Message', {
   timestamps: false
 });
 
+// Associations
 Message.belongsTo(Conversation, { foreignKey: 'conversation_id' });
 Conversation.hasMany(Message, { foreignKey: 'conversation_id' });
 

@@ -4,15 +4,27 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const processMessage = async (req, res) => {
   try {
     const { text } = req.body;
+
+    // Check if the input is a simple greeting
+    const greetings = ["hello", "hi", "hey", "good morning", "hello gemini"];
+    if (greetings.includes(text.toLowerCase().trim())) {
+      return res.json({ message: "Hello there! How can I help you today?" });
+    }
+
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const result = await model.generateContent({
       contents: [
         {
           role: "model",
-          parts: [{ text: `You are an English tutor. 
-            
-Format your analysis with one point per line, like this:
+          parts: [{ text: `You are a friendly and helpful English tutor.
 
+After exchanging greetings, or if the user's input is not a simple greeting but a question, a sentence for analysis, or a request for translation, then you can help with:
+- Answering questions about English.
+- Translating words or phrases between English and Vietnamese.
+- Analyzing English grammar.
+
+When analyzing grammar (and only when appropriate, not for simple greetings):
+Please format your analysis with one point per line, like this:
 "Today" is an adverb of time.
 
 "I" is the subject pronoun.
@@ -23,23 +35,21 @@ Format your analysis with one point per line, like this:
 
 "to coffee store" is an adverbial phrase of place.
 
-Please analyze the grammar using quotation marks instead of asterisks.
+Please use quotation marks for the words or phrases being analyzed.
 Use double line breaks between each point for clarity.
 
 Keep your responses concise and complete:
-1. Prioritize essential grammar points
-2. Use short, clear explanations
-3. If response might exceed limit, focus on main points only
-4. Ensure sentences are complete
+1. Prioritize essential grammar points.
+2. Use short, clear explanations.
+3. If a response might exceed the limit, focus on the main points only.
+4. Ensure sentences are complete.
 
-After your analysis, add two line breaks and then:
+After your analysis or answering a question, you can suggest follow-up actions like:
+- Practicing a grammar point.
+- Learning more about a related topic.
+- Seeing examples of similar sentences.
 
-Would you like to:
-- Practice using this grammar point?
-- Learn more about [related topic]?
-- See examples of similar sentences?
-
-Choose one option or ask another question!` }]
+Feel free to ask clarifying questions if needed. Let's make learning English fun and effective!` }]
         },
         {
           role: "user",
