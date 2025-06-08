@@ -12,7 +12,8 @@ app.use(express.json()); // Ensure this line is present to parse JSON bodies
 app.use('/api/chat', require('./routes/chat.routes'));
 app.use('/api/conversations', require('./routes/conversation.routes'));
 app.use('/api/messages', require('./routes/messages.routes'));
-app.use('/api', require('./routes/auth.routes')); // Add this line
+app.use('/api', require('./routes/auth.routes')); 
+app.use('/api', require('./routes/vocabulary.routes'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

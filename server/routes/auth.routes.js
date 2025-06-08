@@ -21,21 +21,31 @@ router.post('/login', async (req, res) => {
   try {
     // Find the user by username
     const user = await User.findOne({ where: { username } });
+    
+    // Check if user exists and password is correct
     if (!user || user.password !== password) {
+      // Use a more specific error message for debugging, but a general one for production
+      console.log(`Login attempt failed for user: ${username}. Reason: User not found or password incorrect.`);
       return res.status(401).json({ success: false, message: 'Invalid username or password' });
     }
+    
     // If credentials are valid
+    console.log(`Login successful for user: ${username}`);
     res.json({
       success: true,
       userId: user.user_id, // Make sure this is the correct field from your DB
       message: "Login successful"
     });
   } catch (error) {
-    res.json({
+    // Log the actual error on the server for debugging
+    console.error('An error occurred during login:', error);
+    
+    // Send a generic error message to the client
+    res.status(500).json({
       success: false,
-      message: "Invalid credentials"
+      message: "An internal server error occurred. Please try again later."
     });
   }
-}); // <-- This closes the router.post
+});
 
 module.exports = router;

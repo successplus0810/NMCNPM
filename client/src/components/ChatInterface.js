@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FaMicrophone, FaPlay, FaStop } from 'react-icons/fa';
 // Removed unused import: getChatHistory
 import { sendMessage } from '../services/api';
+import TextComponent from './TextComponent';
 import { initializeSpeechRecognition, initializeSpeechSynthesis } from '../utils/speechUtils';
 import './ChatInterface.css';
 
@@ -182,7 +183,7 @@ const ChatInterface = ({ userId }) => {
         {messages.map((message, index) => {
           return (
             <div key={index} className={`message ${message.sender}`}>
-              <p>{message.text}</p>
+              <TextComponent text={message.text} />
               <button
                 onClick={() => playText(message.text)}
                 disabled={isPlaying}

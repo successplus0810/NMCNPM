@@ -1,9 +1,14 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+let lastSentence = ""; // Variable to store the last sentence
+
 const processMessage = async (req, res) => {
   try {
     const { text } = req.body;
+
+    // Store the current sentence
+    lastSentence = text;
 
     // Check if the input is a simple greeting
     const greetings = ["hello", "hi", "hey", "good morning", "hello gemini"];
@@ -49,6 +54,8 @@ After your analysis or answering a question, you can suggest follow-up actions l
 - Learning more about a related topic.
 - Seeing examples of similar sentences.
 
+Use lastSentence is ${lastSentence} to response to the user is they want to analyze grammar or ask a question.
+
 Feel free to ask clarifying questions if needed. Let's make learning English fun and effective!` }]
         },
         {
@@ -70,6 +77,7 @@ Feel free to ask clarifying questions if needed. Let's make learning English fun
   }
 };
 
+// Use lastSentence for automatic analysis when needed
 // Add this function
 const getHistory = async (req, res) => {
   try {

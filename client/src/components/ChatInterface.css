@@ -37,12 +37,14 @@
   background-color: #e3f2fd;
   margin-left: auto;
   color: #1565c0;
+  cursor: pointer;
 }
 
 .message.ai {
   background-color: #f5f5f5;
   margin-right: auto;
   color: #333;
+  cursor: pointer;
 }
 
 .input-container {
